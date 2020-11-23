@@ -1,19 +1,27 @@
-#Overview
+# DHEW Mocks
 
-The purpose of this repository is to bundle the logic for various mocks used by the DHEW team. Currently the only mock implementation in this repo is MPI - Patient Demographics Query (PDQ)
+Mock API implementations for use in the initial development of client applications. 
+You can add your own wrap around it to deploy in 
 
 ## Usage
 
-To use the package you need to add the github npm registry to your project as an npm source. In the same folder as your package.json, create a file called `.npmrc` and add the following
+To use this package in a node app, you'll need to add a `.npmrc` file with the following
 
-`@nwisbeta:registry=https://npm.pkg.github.com/` 
+```
+@nwisbeta:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=GITHUB_PERSONAL_ACCESS_TOKEN
+```
 
->NOTE: Make sure there are no empty spaces.
+Once that's done, `npm install @nwisbeta/dhew-mocks` should work like a charm ;)
 
-Depending on where you are building you app from you might need to supply an access key. If this is the case you have to add the below on a new line.
+Currently the only mock implementation is for MPI PDQ (Patient Demographics Query)
 
-`//npm.pkg.github.com/:_authToken=YOUR_ACCESS_TOKEN`
+```javascript
+const { mpi } = require('@nwisbeta/dhew-mocks');
 
-You can then update your package.json file manually or try running 
+const soapRequest = "<...>" 
+// This should be a real SOAP request as per the specification 
+// (see https://github.com/nwisbeta/api-catalogue/blob/master/catalogue/mpi/pdq/spec/service.wsdl)
 
-`npm install @nwisbeta/dhew-mocks`
+const soapResonse = mpi.pdq.InvokePatientDemographicsQuery(soapMessage);
+```
